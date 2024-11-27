@@ -1,0 +1,48 @@
+package Assignment;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+
+public class slider {
+
+	public static void main(String[] args) throws InterruptedException {
+		WebDriver driver=new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		
+		driver.get("https://www.fitpeo.com/revenue-calculator");
+		driver.manage().window().maximize();
+		
+		WebElement inputBox = driver.findElement(By.xpath("//input[@type='number']"));
+		WebElement slider = driver.findElement(By.xpath("//input[@type='range']"));
+
+		// Get the slider's width
+        int sliderWidth = slider.getSize().getWidth(); // Get the slider's width in pixels
+        int minValue = 0; // Min value of the slider
+        int maxValue = 2000; // Max value of the slider
+        int targetValue = 820; // The target value we want to set
+
+        // Calculate the offset for the target value
+        int currentValue = Integer.parseInt(slider.getAttribute("value")); // Get the current slider value
+        int difference = targetValue - currentValue;
+        double pixelsPerUnit = sliderWidth / (double)(maxValue - minValue);
+        int offset = (int)(difference * pixelsPerUnit);
+
+        // Move the slider to the target value
+        Actions actions = new Actions(driver);
+        actions.clickAndHold(slider).moveByOffset(offset, 0).release().perform();
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].dispatchEvent(new Event('input'));", inputBox);
+        
+        // Validate the slider position after moving
+        String currentValueInBox = inputBox.getAttribute("value");
+
+        System.out.println("Input box value: " + currentValueInBox);
+}
+}

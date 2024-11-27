@@ -1,0 +1,54 @@
+package Assignment;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class slider {
+
+	public static void main(String[] args) throws InterruptedException {
+		WebDriver driver=new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		
+		driver.get("https://www.fitpeo.com/revenue-calculator");
+		driver.manage().window().maximize();
+		
+		WebElement inputBox = driver.findElement(By.xpath("//input[@type='number']"));
+		WebElement slider = driver.findElement(By.xpath("//input[@type='range']"));
+
+		// Desired target value
+        int targetValue = 820;
+        
+        int minValue = Integer.parseInt(slider.getAttribute("min"));
+        int maxValue = Integer.parseInt(slider.getAttribute("max"));
+        int currentValue = Integer.parseInt(slider.getAttribute("value"));
+        int sliderWidth = slider.getSize().width;
+        
+        int targetOffset = (targetValue - minValue) * sliderWidth / (maxValue - minValue);
+
+        // Create Actions object to simulate drag and drop
+        Actions actions = new Actions(driver);
+
+        // Perform the drag-and-drop action
+        actions.clickAndHold(slider)
+               .moveByOffset(targetOffset - currentValue, 0) // Move horizontally based on the calculated offset
+               .release()
+               .perform();
+
+     
+
+        // Wait for the slider to reflect the value change
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+//        wait.until(ExpectedConditions.attributeToBe(slider, "value", String.valueOf(targetValue)));
+
+        // Confirm the value has been set and UI is updated
+        String newValue = slider.getAttribute("value");
+        System.out.println("Slider moved to value: " + newValue);
+}
+}

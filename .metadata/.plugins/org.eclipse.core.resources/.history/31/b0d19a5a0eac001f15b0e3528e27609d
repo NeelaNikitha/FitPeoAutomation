@@ -1,0 +1,36 @@
+package Assignment;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class slider {
+
+	public static void main(String[] args) {
+		WebDriver driver=new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		
+		driver.get("https://www.fitpeo.com/revenue-calculator");
+		driver.manage().window().maximize();
+		
+		 // Locate the slider
+        WebElement slider = driver.findElement(By.xpath("//input[@type='range']"));
+
+     // Desired target value
+        int targetValue = 820;
+
+        // Use JavaScript to set the slider value directly
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].value = arguments[1];", slider, targetValue);
+
+        // Confirm the value has been set
+        String newValue = slider.getAttribute("value");
+        System.out.println("Slider moved to value: " + newValue);
+
+	}
+
+}

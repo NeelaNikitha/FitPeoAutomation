@@ -1,0 +1,28 @@
+package Assignment;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+
+public class slider {
+
+	public static void main(String[] args) {
+		WebDriver driver=new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		
+		driver.get("https://www.fitpeo.com/revenue-calculator");
+		driver.manage().window().maximize();
+		
+		WebElement inputbox=driver.findElement(By.xpath("(//input[@id=':R57alklff9da:'])[1]"));
+		
+		// Use Actions to click and type the value
+		Actions actions = new Actions(driver);
+		actions.moveToElement(inputbox).click().sendKeys("560").perform();
+
+	}
+
+}

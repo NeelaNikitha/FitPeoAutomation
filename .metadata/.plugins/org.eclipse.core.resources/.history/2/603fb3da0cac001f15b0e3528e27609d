@@ -1,0 +1,53 @@
+package Assignment;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+
+public class slider {
+
+	public static void main(String[] args) {
+		WebDriver driver=new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		
+		driver.get("https://www.fitpeo.com/revenue-calculator");
+		driver.manage().window().maximize();
+		
+		 // Locate the slider
+        WebElement slider = driver.findElement(By.xpath("//input[@type='range']"));
+
+     // Get slider attributes
+        int minValue = Integer.parseInt(slider.getAttribute("min")); // Minimum value
+        int maxValue = Integer.parseInt(slider.getAttribute("max")); // Maximum value
+        int currentValue = Integer.parseInt(slider.getAttribute("value")); // Current value
+        int targetValue = 820; // Desired value
+
+        // Initialize Actions
+        Actions actions = new Actions(driver);
+
+        // Move slider incrementally
+        while (currentValue != targetValue) {
+            int step = (currentValue < targetValue) ? 1 : -1; // Determine direction
+            actions.dragAndDropBy(slider, step, 0).perform();
+
+            // Get the updated value
+            currentValue = Integer.parseInt(slider.getAttribute("value"));
+
+            System.out.println("Current Slider Value: " + currentValue);
+
+            // Break if value cannot be fine-tuned further
+            if (Math.abs(currentValue - targetValue) < 1) {
+                break;
+            }
+        }
+
+        // Final slider value
+        System.out.println("Slider moved to final value: " + currentValue);
+
+	}
+
+}

@@ -1,0 +1,47 @@
+package Assignment;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+
+public class slider {
+
+	public static void main(String[] args) {
+		WebDriver driver=new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		
+		driver.get("https://www.fitpeo.com/revenue-calculator");
+		driver.manage().window().maximize();
+		
+		 // Locate the slider
+        WebElement slider = driver.findElement(By.xpath("//input[@type='range']"));
+
+        // Get the slider's width
+        int sliderWidth = slider.getSize().getWidth();
+
+        // Define slider range
+        int minValue = 0;
+        int maxValue = 2000;
+
+        // Define the target value
+        int targetValue = 820;
+
+        // Calculate the offset in pixels
+        int offset = (int) ((double) (targetValue - minValue) / (maxValue - minValue) * sliderWidth);
+
+        // Drag the slider using Actions
+        Actions actions = new Actions(driver);
+        actions.dragAndDropBy(slider, offset - (sliderWidth / 2), 0).perform();
+
+        // Verify the slider value (if accessible via an attribute)
+        String sliderValue = slider.getAttribute("value");
+        System.out.println("Slider moved to value: " + sliderValue);
+
+
+	}
+
+}

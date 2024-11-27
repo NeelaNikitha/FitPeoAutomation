@@ -1,0 +1,67 @@
+package Assignment;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class slider {
+
+	public static void main(String[] args) throws InterruptedException {
+		WebDriver driver=new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		
+		driver.get("https://www.fitpeo.com/revenue-calculator");
+		driver.manage().window().maximize();
+		
+		WebElement inputBox = driver.findElement(By.cssSelector("input.MuiInputBase-input"));
+		WebElement slider = driver.findElement(By.xpath("//input[@type='range']"));
+		slider.clear();
+		inputBox.clear();
+		
+		//inputBox.clear();
+//		((JavascriptExecutor) driver).executeScript("arguments[0].value='500';", inputBox);
+//		((JavascriptExecutor) driver).executeScript("arguments[0].dispatchEvent(new Event('change'));", inputBox);
+//		
+//		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//        wait.until(ExpectedConditions.attributeToBe(inputBox, "value", "500"));
+//
+//        String inputValue = inputBox.getAttribute("value");
+//        System.out.println("Input box value: " + inputValue);
+//        
+//        WebElement sliderThumb = driver.findElement(By.cssSelector("span.MuiSlider-thumb"));
+//        System.out.println("Slider position: " + sliderThumb.getAttribute("style"));
+		
+//		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//        WebElement sliderTrack = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".MuiSlider-rail")));
+//        WebElement sliderThumb = driver.findElement(By.cssSelector(".MuiSlider-thumb"));
+//        
+//		
+//		int sliderWidth = sliderTrack.getSize().getWidth();
+//		
+//		
+//		WebElement sliderValueElement = driver.findElement(By.cssSelector(".MuiInputBase-input"));
+//		int currentValue = Integer.parseInt(sliderValueElement.getAttribute("value"));
+//		int minValue = Integer.parseInt(sliderValueElement.getAttribute("min"));
+//		int maxValue = Integer.parseInt(sliderValueElement.getAttribute("max"));
+//		
+//		double pixelsPerUnit = (double) sliderWidth / (maxValue - minValue);
+//		int targetValue = 820; // Desired value
+//
+//		int pixelOffset = (int) ((targetValue - currentValue) * pixelsPerUnit);
+//		
+//		Actions actions = new Actions(driver);
+//		actions.clickAndHold(sliderThumb).moveByOffset(pixelOffset, 0).release().perform();
+//		
+//		WebElement sliderValue = driver.findElement(By.cssSelector(".MuiInputBase-input"));
+//		System.out.println("Updated Value: " + sliderValue.getAttribute("value"));
+
+
+}
+}

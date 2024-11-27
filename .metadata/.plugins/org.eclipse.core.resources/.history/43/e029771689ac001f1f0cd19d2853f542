@@ -1,0 +1,55 @@
+package Assignment;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+
+public class slider {
+
+	public static void main(String[] args) throws InterruptedException {
+		WebDriver driver=new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		
+		driver.get("https://www.fitpeo.com/revenue-calculator");
+		driver.manage().window().maximize();
+		
+		WebElement inputBox = driver.findElement(By.xpath("//input[@type='number']"));
+		WebElement slider = driver.findElement(By.xpath("//input[@type='range']"));
+
+        // Use Actions class to clear and type
+        Actions actions = new Actions(driver);
+
+        int sliderOffset = calculateSliderOffset(200, 2000, 560, slider); // Calculate offset based on slider range
+        actions.dragAndDropBy(slider, sliderOffset, 0).perform();
+        
+        // Step 2: Clear and set the input box value
+        inputBox.clear();
+        inputBox.sendKeys("560");
+
+        // Step 3: Trigger an 'input' event to ensure synchronization
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].dispatchEvent(new Event('input'));", inputBox);
+
+        // Step 4: Validate the input box value and slider synchronization
+        String currentValue = inputBox.getAttribute("value");
+        if ("560".equals(currentValue)) {
+            System.out.println("Test Passed: Input box and slider synchronized to 560.");
+        } else {
+            System.out.println("Test Failed: Input box value is " + currentValue);
+        }
+        
+	}
+
+	private static int calculateSliderOffset(int min, int max, int targetValue, WebElement slider) {
+        int sliderWidth = slider.getSize().getWidth(); // Get the slider's width in pixels
+        double range = max - min; // Total range of the slider
+        double pixelsPerUnit = sliderWidth / range; // Pixels per unit of slider movement
+        return (int) ((targetValue - min) * pixelsPerUnit); // Calculate the offset
+    }     
+
+}

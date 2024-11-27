@@ -1,0 +1,77 @@
+package Assignment;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class slider {
+
+	public static void main(String[] args) throws InterruptedException {
+		WebDriver driver=new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		
+		driver.get("https://www.fitpeo.com/revenue-calculator");
+		driver.manage().window().maximize();
+		
+		// Locate the slider input element (use the appropriate locator)
+        WebElement slider = driver.findElement(By.cssSelector("input[type='range']"));
+        
+        int width = slider.getSize().width;
+        System.out.print(width);
+
+        // Use JavascriptExecutor to change the value of the slider
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].value = 820;", slider);
+
+        // Optionally, you can also trigger the 'change' event to ensure the slider updates
+        js.executeScript("arguments[0].dispatchEvent(new Event('change'));", slider);
+
+        // Verify the change (optional)
+        System.out.println("New slider value: " + slider.getAttribute("value"));
+        
+     // Optionally, trigger a click or mouse action to ensure the UI is fully updated
+        Actions actions = new Actions(driver);
+        actions.clickAndHold(slider)
+        .moveByOffset(88, 0)  
+        .release()
+        .perform();
+
+        // Verify the new value (optional)
+        System.out.println("Final slider value: " + slider.getAttribute("value"));
+
+		
+//		WebElement inputBox = driver.findElement(By.xpath("//input[@type='number']"));
+//		WebElement slider = driver.findElement(By.xpath("//body//div//span//span[3]"));
+//		System.out.println(slider.getAttribute("style"));
+//		
+//		// Use JavascriptExecutor to change the width
+//        JavascriptExecutor js = (JavascriptExecutor) driver;
+//        js.executeScript("arguments[0].style.left = '41%';", slider);
+//
+//        // Verify if the change was applied (optional)
+//        System.out.println("New width: " + slider.getAttribute("style"));
+
+        // Close the browser
+        //driver.quit();
+
+//		WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(30));
+//		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@type='range']")));
+//		int xwidth=slider.getSize().width;
+//		
+//		Actions s= new Actions(driver);
+//		s.dragAndDropBy(slider, xwidth*5, 0);
+//		s.build().perform();
+//		
+//		JavascriptExecutor js=(JavascriptExecutor)driver;
+//		js.executeScript("arguments[0].value = arguments[1];", slider, )
+		
+		
+}
+}

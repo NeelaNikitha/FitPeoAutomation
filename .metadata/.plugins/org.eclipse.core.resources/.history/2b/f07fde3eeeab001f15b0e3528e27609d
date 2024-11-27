@@ -1,0 +1,53 @@
+package Assignment;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+
+public class FitPeoAssignment {
+
+	public static void main(String[] args) {
+		
+		WebDriver driver=new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		
+		driver.get("https://www.fitpeo.com/");
+		driver.manage().window().maximize();
+		
+		driver.findElement(By.xpath("//div[text()='Revenue Calculator']")).click();
+		
+		JavascriptExecutor js=(JavascriptExecutor)driver;
+		WebElement ele=driver.findElement(By.xpath("//h4[text()='Medicare Eligible Patients']"));
+		js.executeScript("arguments[0].scrollIntoView();", ele);
+		
+		WebElement slider = driver.findElement(By.xpath("//input[@type='range']"));
+		int sliderWidth = slider.getSize().getWidth();
+        
+        // Slider's range is from 0 to 2000, and we want to set it to 820
+        //int minValue = 0;
+        int maxValue = 2000;
+        int targetValue = 820;
+        
+        // Calculate the ratio (target value relative to the full range)
+        double ratio = (double) targetValue / maxValue;
+        
+        // Calculate the pixel distance corresponding to the target value
+        int targetPosition = (int) (sliderWidth * ratio);  // Position in pixels
+        
+        // Get the current position of the slider (starting at 200)
+        int currentPosition = (int) (sliderWidth * ((double) 200 / maxValue));
+        
+        // Calculate the distance to move the slider (target position - current position)
+        int distanceToMove = targetPosition - currentPosition;
+        
+        // Move the slider using Actions API (drag the slider by the calculated distance)
+        Actions actions = new Actions(driver);
+        actions.dragAndDropBy(slider, distanceToMove, 0).perform();
+	}
+
+}
